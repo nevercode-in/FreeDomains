@@ -1,0 +1,2 @@
+import { a as UseAxiosOptionsWithInitialData, i as UseAxiosOptionsBase, n as StrictUseAxiosReturn, o as UseAxiosReturn, r as UseAxiosOptions, s as useAxios, t as EasyUseAxiosReturn } from "./index-ch2MM_8w.js";
+export { EasyUseAxiosReturn, StrictUseAxiosReturn, UseAxiosOptions, UseAxiosOptionsBase, UseAxiosOptionsWithInitialData, UseAxiosReturn, useAxios };
