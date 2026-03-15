@@ -36,7 +36,7 @@ isroot.in  offers free subdomains for developers. By default, accounts can regis
 3. Use **DNS → Manage DNS** in the dashboard to add A, CNAME, TXT, or other records.
 
 ## Community & Support
-- Discord: Join our community — https://discord.com/invite/jhb8bZRqPz
+- Discord: Join our community — https://dsc.gg/isroot
 - GitHub Issues: https://github.com/VIGGU-7/isroot.in/issues
 - Support email: `support@nevercode.in` (or open an issue for tracking)
 
