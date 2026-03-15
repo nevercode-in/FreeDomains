@@ -38,10 +38,10 @@ isroot.in  offers free subdomains for developers. By default, accounts can regis
 ## Community & Support
 - Discord: Join our community — https://discord.com/invite/jhb8bZRqPz
 - GitHub Issues: https://github.com/VIGGU-7/isroot.in/issues
-- Support email: `support@admin.isroot.in` (or open an issue for tracking)
+- Support email: `support@nevercode.in` (or open an issue for tracking)
 
 ### Abuse reporting
-We take abuse seriously. Report abuse to: `reportabuse@admin.isroot.in`
+We take abuse seriously. Report abuse to: `reportabuse@nevercode.in`
 
 ## Contributing
 Found a bug or want to improve the docs? Discuss features on Discord, then open a GitHub issue or PR.
