@@ -1,4 +1,4 @@
-# isroot.in
+thank byou# isroot.in
 
 > Free subdomains for developers 🚀
 
