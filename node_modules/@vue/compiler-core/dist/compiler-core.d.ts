@@ -1,6 +1,6 @@
 import { PatchFlags } from '@vue/shared';
 export { generateCodeFrame } from '@vue/shared';
-import { Node as Node$1, Identifier, Function, BlockStatement as BlockStatement$1, SwitchCase, Program, ObjectProperty } from '@babel/types';
+import { Node as Node$1, Identifier, Function, ObjectProperty, BlockStatement as BlockStatement$1, SwitchCase, Program } from '@babel/types';
 import { ParserPlugin } from '@babel/parser';
 
 export declare const FRAGMENT: unique symbol;
@@ -122,6 +122,7 @@ export interface TransformContext extends Required<Omit<TransformOptions, keyof 
     hoist(exp: string | JSChildNode | ArrayExpression): SimpleExpressionNode;
     cache(exp: JSChildNode, isVNode?: boolean, inVOnce?: boolean): CacheExpression;
     constantCache: WeakMap<TemplateChildNode, ConstantTypes>;
+    vForMemoKeyedNodes: WeakSet<ElementNode>;
     filters?: Set<string>;
 }
 export declare function createTransformContext(root: RootNode, { filename, prefixIdentifiers, hoistStatic, hmr, cacheHandlers, nodeTransforms, directiveTransforms, transformHoist, isBuiltInComponent, isCustomElement, expressionPlugins, scopeId, slotted, ssr, inSSR, ssrCssVars, bindingMetadata, inline, isTS, onError, onWarn, compatConfig, }: TransformOptions): TransformContext;
@@ -138,6 +139,8 @@ export declare function buildProps(node: ElementNode, context: TransformContext,
     patchFlag: number;
     dynamicPropNames: string[];
     shouldUseBlock: boolean;
+    needsPatch: boolean;
+    isBlockRequired: boolean;
 };
 export declare function buildDirectiveArgs(dir: DirectiveNode, context: TransformContext): ArrayExpression;
 
@@ -375,6 +378,10 @@ export interface VNodeCall extends Node {
     patchFlag: PatchFlags | undefined;
     dynamicProps: string | SimpleExpressionNode | undefined;
     directives: DirectiveArguments | undefined;
+    /** Whether this vnode must be patched if a later transform makes it non-block. */
+    needsPatch?: boolean;
+    /** Whether a later transform must preserve this vnode as a block. */
+    isBlockRequired?: boolean;
     isBlock: boolean;
     disableTracking: boolean;
     isComponent: boolean;
@@ -473,11 +480,24 @@ export interface DirectiveArgumentNode extends ArrayExpression {
 }
 export interface RenderSlotCall extends CallExpression {
     callee: typeof RENDER_SLOT;
-    arguments: [string, string | ExpressionNode] | [string, string | ExpressionNode, PropsExpression] | [
+    arguments: [string, string | ExpressionNode] | [string, string | ExpressionNode, PropsExpression | '{}'] | [
         string,
         string | ExpressionNode,
         PropsExpression | '{}',
-        TemplateChildNode[]
+        FunctionExpression | string
+    ] | [
+        string,
+        string | ExpressionNode,
+        PropsExpression | '{}',
+        FunctionExpression | string,
+        string
+    ] | [
+        string,
+        string | ExpressionNode,
+        PropsExpression | '{}',
+        FunctionExpression | string,
+        string,
+        JSChildNode
     ];
 }
 export type SlotsExpression = SlotsObjectExpression | DynamicSlotsExpression;
@@ -948,7 +968,7 @@ export type CompilerOptions = ParserOptions & TransformOptions & CodegenOptions;
  *
  * Since TS 5.3, dts generation starts to strangely include broken triple slash
  * references for source-map-js, so we are inlining all source map related types
- * here to to workaround that.
+ * here to workaround that.
  */
 export interface CodegenSourceMapGenerator {
     setSourceContent(sourceFile: string, sourceContent: string): void;

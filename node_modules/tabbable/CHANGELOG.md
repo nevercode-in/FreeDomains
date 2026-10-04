@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.5.0
+
+### Minor Changes
+
+- 8e6c074: Add support for `<area>` elements with an `href` attribute (image map hotspots),
+
+### Patch Changes
+
+- f656723: Treat elements with `visibility: collapse` as hidden, the same way `visibility: hidden` is already handled, so they are no longer considered tabbable or focusable. This matches browser behavior, where `collapse` hides an element (outside of table rows/columns) just like `hidden`.
+
 ## 6.4.0
 
 ### Minor Changes

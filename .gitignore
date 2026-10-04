@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+build/
+.vitepress/cache/
+.vitepress/dist/
+.env*
+!.env.example
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*

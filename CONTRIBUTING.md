@@ -36,3 +36,22 @@ If you want to improve the `isroot.in` infrastructure or dashboard:
 If you find a bug in the dashboard, please open an Issue using the "Bug Report" template.
 
 **DO NOT** open public issues for security vulnerabilities. See `SECURITY.md`.
+
+
+## Frontend contributions
+
+Submit changes to pages, components, styles, public assets, or browser helpers.
+Keep existing file paths and `/api/*` contracts so reviewed changes can be brought
+into the private application. Coordinate API contract changes with a maintainer.
+Do not submit backend handlers, database models, secrets, or application data.
+
+Before submitting, run `npm ci`, `npm run typecheck`, and `npm run build`.
+For Markdown documentation changes, also run `npm run docs:build`.
+Describe affected screens and include screenshots for visual changes where useful.
+Without the private backend, authenticated flows cannot be verified locally;
+maintainers validate those flows in the complete app before deployment.
+
+Maintainers review public pull requests and import only approved frontend changes
+into a private branch, preserving private backend code and deployment configuration.
+Frontend package changes must be reconciled with the private dependency manifest
+rather than replacing that manifest with this repository's frontend-only version.

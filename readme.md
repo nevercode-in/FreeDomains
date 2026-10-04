@@ -22,8 +22,8 @@ isroot.in exists to remove friction and cost from getting online. Whether you ar
 
 ## DNS & Nameservers
 - Nameservers are located in **Hyderabad**.
-  - Primary: `ns1.isroot.in` (Hyderabad)
-  - Secondary: `ns2.isroot.in` (Hyderabad)
+  - Primary: `ns1.nevercode.in` (Hyderabad)
+  - Secondary: `ns2.nevercode.in` (Hyderabad)
 
 > Note: If you manage DNS externally (Cloudflare, etc.), point your domain's nameservers to your DNS provider as instructed in the dashboard.
 
@@ -48,4 +48,42 @@ Found a bug or want to improve the docs? Discuss features on Discord, then open 
 
 ---
 
+## Frontend source
+
+This repository includes the Next.js pages and components for isroot.in, including
+landing, login, registration, WHOIS, dashboard, and the complete `/docs` section
+(privacy, terms, and usage policy). The existing Markdown documentation in `docs/`
+and its VitePress configuration are retained.
+
+### Local development
+
+Use Node.js 22 LTS or newer, then run:
+
+```bash
+npm ci
+cp .env.example .env.local
+npm run dev
+```
+
+Set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` to a public site key configured for your local
+host if you need to render the CAPTCHA widget. Never add secret keys or database
+credentials. Open http://localhost:3000 for the Next.js frontend.
+
+The frontend retains its real same-origin `/api/*` requests. Backend handlers are
+maintained privately and are not included. This repository contains no mock data.
+API-dependent features (including login, dashboard data, WHOIS, and domain search)
+require the private backend and will not work in a standalone local checkout.
+
+```bash
+npm run typecheck
+npm run build
+npm run docs:dev
+npm run docs:build
+```
+
+The `docs:*` scripts run the existing VitePress documentation separately.
+Production deployment remains in the private application repository.
+
+
 **Maintainer:** Vignesh — created the site using Next.js
+

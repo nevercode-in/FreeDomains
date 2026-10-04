@@ -89,6 +89,9 @@ export interface Schema {
    * Object mapping properties to info.
    */
   property: Record<string, Info>
+  /**
+   * Space of the schema.
+   */
   space: Space | undefined
 }
 

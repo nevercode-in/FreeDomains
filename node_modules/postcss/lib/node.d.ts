@@ -31,12 +31,12 @@ declare namespace Node {
 
   export interface Position {
     /**
-     * Source line in file. In contrast to `offset` it starts from 1.
+     * Source column in file. It starts from 1.
      */
     column: number
 
     /**
-     * Source column in file.
+     * Source line in file. It starts from 1.
      */
     line: number
 
@@ -126,7 +126,6 @@ declare namespace Node {
     word?: string
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   class Node extends Node_ {}
   export { Node as default }
 }

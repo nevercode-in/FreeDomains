@@ -1,1 +1,1 @@
-export * from '@shikijs/engine-oniguruma';
+export * from "@shikijs/engine-oniguruma";

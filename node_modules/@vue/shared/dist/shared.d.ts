@@ -298,7 +298,8 @@ export declare function escapeHtmlComment(src: string): string;
 export declare const cssVarNameEscapeSymbolsRE: RegExp;
 export declare function getEscapedCssVarName(key: string, doubleEscape: boolean): string;
 
-export declare function looseEqual(a: any, b: any): boolean;
+type ComparisonState = [Map<any, any>, Map<any, any>];
+export declare function looseEqual(a: any, b: any, seen?: ComparisonState): boolean;
 export declare function looseIndexOf(arr: any[], val: any): number;
 
 /**

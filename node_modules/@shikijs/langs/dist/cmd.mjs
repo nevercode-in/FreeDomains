@@ -1,2 +1,2 @@
-/* Alias cmd for vb */
-export { default } from './vb.mjs'
+/* Alias cmd for bat */
+export { default } from './bat.mjs'

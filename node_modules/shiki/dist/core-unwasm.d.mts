@@ -1,1 +1,1 @@
-export * from '@shikijs/core';
+export * from "@shikijs/core";
