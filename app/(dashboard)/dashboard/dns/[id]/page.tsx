@@ -1,25 +1,27 @@
-"use client"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+
+export async function generateStaticParams() {
+  return [{ id: "1" }]
+}
 
 export default function DNSDetailPage() {
   return (
     <div className="p-6 md:p-8 max-w-3xl mx-auto">
       <div className="relative">
         {/* Coming Soon Overlay */}
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-lg flex items-center justify-center z-10">
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-lg flex items-center justify-center">
           <div className="text-center space-y-4">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/20">
               <div className="w-12 h-12 rounded-full border-2 border-accent border-t-accent/30 animate-spin"></div>
             </div>
-            <h2 className="text-2xl font-bold text-foreground">Coming Soon</h2>
+            <h3 className="text-2xl font-bold text-foreground">Coming Soon</h3>
             <p className="text-muted-foreground max-w-sm">
               DNS Record Management is under development. We're working hard to bring this feature to you soon.
             </p>
             <div className="flex justify-center gap-2 pt-4">
               <div className="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
-              <div className="w-2 h-2 rounded-full bg-accent animate-pulse delay-100"></div>
-              <div className="w-2 h-2 rounded-full bg-accent animate-pulse delay-200"></div>
+              <div className="w-2 h-2 rounded-full bg-accent animate-pulse delay-130"></div>
+              <div className="w-2 h-2 rounded-full bg-accent animate-pulse delay-210"></div>
             </div>
           </div>
         </div>
