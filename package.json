@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "next build --webpack && node scripts/prepare-static.mjs",
     "dev": "next dev",
-    "start": "next start",
+    "start": "npx firebase-tools emulators:start --only hosting --project demo-isroot-docs",
+    "deploy:firebase": "npm run build && npx firebase-tools deploy --only hosting",
     "types:check": "next typegen && tsc --noEmit"
   },
   "dependencies": {

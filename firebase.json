@@ -1,0 +1,26 @@
+{
+  "hosting": {
+    "public": "out",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "redirects": [
+      { "source": "/docs", "destination": "/", "type": 301 },
+      { "source": "/docs/:path*", "destination": "/:path", "type": 301 }
+    ],
+    "headers": [
+      {
+        "source": "/_next/static/**",
+        "headers": [{ "key": "Cache-Control", "value": "public,max-age=31536000,immutable" }]
+      },
+      {
+        "source": "**/*.md",
+        "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+      },
+      {
+        "source": "/api/search",
+        "headers": [{ "key": "Content-Type", "value": "application/json; charset=utf-8" }]
+      }
+    ]
+  }
+}

@@ -3,6 +3,8 @@ import { getPageMarkdownUrl } from '@/lib/shared';
 import { notFound } from 'next/navigation';
 
 export const revalidate = false;
+export const dynamic = 'force-static';
+export const dynamicParams = false;
 
 export async function GET(_req: Request, { params }: RouteContext<'/llms.mdx/docs/[[...slug]]'>) {
   const { slug } = await params;

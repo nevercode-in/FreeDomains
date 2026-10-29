@@ -4,6 +4,8 @@ import { generateOGImage } from 'fumadocs-ui/og';
 import { appName, getPageImageUrl } from '@/lib/shared';
 
 export const revalidate = false;
+export const dynamic = 'force-static';
+export const dynamicParams = false;
 
 export async function GET(_req: Request, { params }: RouteContext<'/og/docs/[...slug]'>) {
   const { slug } = await params;
