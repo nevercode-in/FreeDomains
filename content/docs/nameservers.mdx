@@ -1,0 +1,78 @@
+---
+title: Nameservers
+description: Choose where DNS records for your subdomain are managed.
+---
+
+Nameservers determine which DNS provider answers queries for your subdomain. DNS records determine where its website, email, and other services point.
+
+## Choose your setup
+
+| Setup | Where to manage records |
+| --- | --- |
+| Default isroot nameservers | **DNS Records** in the isroot dashboard |
+| Custom nameservers | Your external DNS provider's dashboard |
+
+The current default nameservers are `ns1.nevercode.in` and `ns2.nevercode.in`.
+
+## Prepare an external provider
+
+Confirm that your provider supports hosting a DNS zone for your exact address, such as `myproject.isroot.in`. Support for delegated subdomains varies by provider and plan; do not assume that every provider accepts them.
+
+Create the zone there, copy all required website and email records, and obtain the two nameserver hostnames assigned by that provider.
+
+## Providers to consider
+
+`isroot.in` is currently not in the Public Suffix List. Look for support for **delegated subdomain zones**, rather than a provider that only accepts registrable domains. The options below are based on provider documentation; creating a zone for an actual isroot registration has not been tested in these guides. Check acceptance before changing delegation or paying for a plan.
+
+| Provider | Delegated-zone guidance | Root hostname targets |
+| --- | --- | --- |
+| deSEC | Its API documentation explicitly describes independently hosted nested zones; a parent PSL entry is not stated as a requirement | Use A/AAAA for the root; do not assume ALIAS or flattening is available |
+| Bunny DNS | Candidate to check: its DNS material describes separate subdomain zones, but does not explicitly promise isroot acceptance | Documents automatic CNAME flattening at a zone apex |
+| Cloudflare | Standalone subdomain zones require its Enterprise subdomain setup; standard free onboarding is not a supported path for this registration | Flattening support does not bypass zone eligibility |
+
+Sources: [deSEC domain management](https://desec.readthedocs.io/en/latest/dns/domains.html), [Bunny's zone explanation](https://bunny.net/academy/dns/what-are-dns-zones-and-dns-records/), [Bunny's record types and flattening](https://bunny.net/docs/dns/records), and [Cloudflare subdomain setup availability](https://developers.cloudflare.com/dns/zone-setups/subdomain-setup/).
+
+### Set up deSEC
+
+1. Create a [deSEC account](https://desec.io/) and add `myproject.isroot.in` as the domain/zone, using your actual registration.
+2. Confirm zone creation succeeds. deSEC's documented policy excludes names that are themselves public suffixes and allows additional account restrictions; it does not require your parent to be a public suffix.
+3. Add your website, mail, and verification records there. Follow deSEC's root-name and TTL rules rather than copying isroot form settings verbatim.
+4. Copy the two authoritative nameservers shown by deSEC and enter them through **Edit Nameservers** in isroot as described below.
+5. Query those servers directly for your records, then check public delegation.
+
+deSEC is [free DNS hosting](https://desec.io/). It is useful for ordinary DNS records; moving there alone does not solve Railway's requirement for root flattening or dynamic ALIAS. A child CNAME such as `www` remains an option.
+
+### Check Bunny DNS for root flattening
+
+1. In Bunny's **DNS → Add DNS Zone**, try creating the exact `myproject.isroot.in` zone. Confirm that your account accepts this delegated subdomain before proceeding.
+2. Copy all required records. For a root hostname target, follow Bunny's apex CNAME flattening instructions. Its web form uses an empty hostname for the root.
+3. Copy the assigned nameservers. Bunny's [quickstart](https://bunny.net/docs/dns/quickstart) currently lists `kiki.bunny.net` and `coco.bunny.net`; prefer the values shown in your account.
+4. Update delegation in isroot and verify the root resolves to address records. Complete domain verification and HTTPS at your host separately.
+
+If Bunny rejects the zone, keep default isroot DNS and use a child CNAME, or ask the provider whether it supports your exact delegated zone. Do not try adding the parent `isroot.in` to your account. Check current billing terms before enabling the service.
+
+### Providers requiring more than two nameservers
+
+The documented isroot form has only **NS1** and **NS2**. If a provider requires more authoritative nameservers, contact [support](/support) before migrating; do not assume entering two is a complete configuration. For example, [Amazon Route 53's subdomain setup](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingNewSubdomain.html) supports delegated zones but assigns four nameservers.
+
+## Update delegation
+
+1. In isroot, open **Subdomains → Manage** for your subdomain.
+2. Choose **Edit Nameservers**.
+3. Enter the assigned hostnames in **NS1** and **NS2**. Use two different nameserver hostnames, without a URL scheme or path.
+4. Choose **Save Changes** and check the success message.
+
+After switching, edit DNS records at the external provider. The isroot DNS editor is disabled while custom nameservers are selected.
+
+## Return to isroot DNS
+
+Set **NS1** to `ns1.nevercode.in` and **NS2** to `ns2.nevercode.in`. Then open **DNS Records**, confirm that editing is available, and check that all required records exist. Use **Retry setup / migration** if offered. Do not assume records created at the external provider will be copied automatically.
+
+## Check delegation
+
+```sh
+dig myproject.isroot.in NS +short
+dig +trace myproject.isroot.in
+```
+
+Cached delegation can take time to expire; the dashboard advises allowing up to 24–48 hours for nameserver changes. If results disagree, see [Troubleshooting](/troubleshooting).

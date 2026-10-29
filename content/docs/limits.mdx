@@ -1,0 +1,37 @@
+---
+title: Limits and naming rules
+description: Understand registration allowances and valid subdomain names.
+---
+
+## Account allowance
+
+| Account state | Subdomain limit |
+| --- | --- |
+| Default account | 1 |
+| GitHub star verified | Up to 5 total |
+
+To unlock the higher allowance, use **Star repo** in the dashboard notice, then **Refresh status**. Star the repository linked by that notice using the GitHub account you use for isroot.
+
+The higher allowance is five total, rather than five additional registrations. Accounts that already exceeded the default limit may retain existing registrations; check the dashboard for your remaining allowance.
+
+## Registration rate
+
+After a successful registration, wait one hour before creating another subdomain. This cooldown applies even when your account has remaining slots.
+
+## Naming rules
+
+- Use 3–63 characters.
+- Use lowercase letters, digits, and hyphens.
+- Start and end with a letter or digit.
+- Enter only your chosen label, without `.isroot.in`.
+- Choose a name that is available and passes the reserved-name and language checks.
+
+For example, `my-project` is valid in format; `ab`, `-project`, and `my_project` are not. A valid format does not guarantee that the name is available. Infrastructure names such as `admin` and `www` are reserved.
+
+## Registration period
+
+Registrations last 365 days. Renewal opens 60 days before expiry. See [Manage subdomains](/manage-domains) for the renewal flow and grace-period details.
+
+## DNS input limits
+
+TTL must be a whole number of at least 60 seconds. MX priority must be between 0 and 65535. See [DNS record reference](/dns-records) for supported types and input examples.

@@ -1,0 +1,57 @@
+---
+title: DNS record reference
+description: Understand supported record types, names, values, and TTL.
+---
+
+The isroot record form supports A, AAAA, CNAME, MX, and TXT.
+
+## Names and hosts
+
+For a zone named `myproject.isroot.in`:
+
+| Name/Host | Resulting DNS name |
+| --- | --- |
+| `@` | `myproject.isroot.in` |
+| `www` | `www.myproject.isroot.in` |
+| `_verify` | `_verify.myproject.isroot.in` |
+| `_dmarc` | `_dmarc.myproject.isroot.in` |
+
+Enter relative names in this form. If a service gives you a full record name, remove the selected zone suffix before entering it.
+
+## Supported types
+
+| Type | Purpose | Example value |
+| --- | --- | --- |
+| A | IPv4 address | `203.0.113.10` |
+| AAAA | IPv6 address | `2001:db8::10` |
+| CNAME | Alias to a hostname | `target.example.com` |
+| MX | Mail server hostname | `mail.example.com`, with priority `10` |
+| TXT | Verification or service text | `service-verification=example-token` |
+
+These addresses and values are examples. Replace them with the exact values supplied by your hosting or email provider.
+
+## CNAME restrictions
+
+A CNAME cannot share its name with other record types. Your delegated zone root already has NS and SOA records, so a CNAME at `@` conflicts with that setup. Use the A/AAAA records supplied by your host for the root, or connect a child name such as `www` using CNAME.
+
+For GitHub Pages at `myproject.isroot.in`, follow the [root-address setup](/connect-project#example-github-pages-at-your-root-address) to add GitHub's A records at `@`. A repository file named `CNAME` does not change this DNS restriction.
+
+For background, see [Cloudflare's CNAME reference](https://www.cloudflare.com/learning/dns/dns-records/dns-cname-record/).
+
+## MX priority and TXT values
+
+MX priority must be an integer from 0 to 65535. Lower values are preferred. Enter the mail server hostname in **Value**, and its priority in the separate field.
+
+Multiple TXT values can share a name. When adding another verification token, preserve existing values used by other services. TXT input is limited to 4096 UTF-8 bytes.
+
+Adding MX records does not create a mailbox. Configure your mail service separately and copy its required verification and authentication records.
+
+## TTL
+
+TTL controls how long a DNS answer can be cached, in seconds. The form defaults to 60 seconds and accepts whole numbers from 60 through 2147483647. Use your provider's recommended value when available.
+
+All values with the same name and type share one TTL. Lowering the TTL now does not remove answers cached under a previous, longer TTL.
+
+## Next steps
+
+Use [Manage DNS](/dns-manage) to enter records, or [Connect a project](/connect-project) for a complete website setup.

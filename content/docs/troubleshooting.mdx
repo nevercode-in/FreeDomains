@@ -1,0 +1,68 @@
+---
+title: Troubleshooting
+description: Resolve registration, DNS, hosting, and renewal problems.
+---
+
+## I cannot register a name
+
+Check the [naming rules and limits](/limits). Choose another label if the name is taken or reserved. If you just registered a different subdomain, wait for the one-hour cooldown.
+
+If **Create Subdomain** is disabled, complete the CAPTCHA. For an expired session, sign in again before retrying.
+
+## My GitHub star has not unlocked more slots
+
+Use the repository link from the dashboard notice, star it with your isroot GitHub account, then choose **Refresh status**. Check the allowance displayed after the refresh. If the refresh fails, sign in again or [contact support](/support) with the error message.
+
+## DNS editing is disabled
+
+Custom nameservers move DNS management to your external provider. Edit records there, or follow [Nameservers](/nameservers) to return to the defaults.
+
+If the zone has not finished initializing, use **Retry setup / migration** when offered. Repeated setup failures should be reported to support.
+
+## A provider rejects my domain or requests access to `isroot.in`
+
+Check [Provider compatibility and PSL](/provider-compatibility). Your registration controls `myproject.isroot.in` and names below it. A verification record requested at `_vercel.isroot.in`, for example, cannot be created in your zone. Contact support with the complete request; changing nameservers does not grant access to the parent.
+
+Cloudflare's standard free zone setup does not support onboarding this delegated subdomain as a separate zone. See [external DNS options](/nameservers#providers-to-consider). For a host that requests CNAME at `@`, use its documented A-record option, a child name such as `www`, or an eligible external provider with apex flattening. See [Connect a project](/connect-project).
+
+## A record is rejected
+
+Check that the name is relative to the selected subdomain, the value matches its type, and TTL is an integer of at least 60. CNAME records cannot coexist with other record types at the same name. MX records require both a hostname and priority.
+
+## GitHub Pages asks for a CNAME at `@`
+
+Your registered address, such as `myproject.isroot.in`, is the root of its delegated DNS zone. isroot does not allow a DNS CNAME there. Follow the [GitHub Pages root-address setup](/connect-project#example-github-pages-at-your-root-address) to use GitHub's four A records at `@` and save the exact address in the repository's **Settings → Pages → Custom domain** field.
+
+If GitHub's DNS check fails, check for old A or AAAA values still pointing to another host. A CNAME for `www` configures only `www.myproject.isroot.in`; the root needs its own records.
+
+## My changes are not visible
+
+First check the selected subdomain and which nameservers are authoritative:
+
+```sh
+dig myproject.isroot.in NS +short
+dig myproject.isroot.in A +short
+dig myproject.isroot.in AAAA +short
+```
+
+For default isroot DNS, you can also query an authoritative server directly:
+
+```sh
+dig @ns1.nevercode.in myproject.isroot.in A +noall +answer
+```
+
+Use your provider's assigned server for custom DNS. If the authoritative answer is correct but other resolvers return an old answer, allow its cached TTL to expire. Nameserver changes can take longer because delegation is also cached.
+
+An empty A answer does not prove failure if you configured only AAAA or a child CNAME. Query the name and type you actually added. On systems without `dig`, try `nslookup myproject.isroot.in`.
+
+## DNS works, but the website does not
+
+Check that your host lists the exact address on the correct project and has completed ownership verification and certificate issuance. For your own server, check its hostname configuration and whether its HTTP/HTTPS service is reachable. Follow [Connect a project](/connect-project).
+
+## Renewal fails
+
+Renewal opens in the final 60 days. Check the expiry date and the error shown by the dashboard. Suspended registrations and those beyond their grace deadline need [support](/support). If the error says the domain changed, refresh before trying again.
+
+## Still stuck?
+
+Send the affected address, exact error, approximate time, and steps you tried to [support](/support). A screenshot and relevant DNS output can help; remove private information first.

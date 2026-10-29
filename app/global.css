@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+:root {
+  --color-fd-primary: hsl(160, 84%, 28%);
+  --color-fd-primary-foreground: hsl(0, 0%, 100%);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.dark {
+  --color-fd-primary: hsl(158, 64%, 56%);
+  --color-fd-primary-foreground: hsl(160, 60%, 8%);
+}

@@ -1,0 +1,136 @@
+---
+title: Connect a project
+description: Point your isroot subdomain to a deployed website or server.
+---
+
+You need a registered isroot subdomain and an application deployed with a hosting provider or on your own server.
+
+## Choose an address and record type
+
+`isroot.in` is currently absent from the [Public Suffix List](/provider-compatibility). A hosting dashboard may therefore classify `myproject.isroot.in` as a subdomain and request a CNAME. In your delegated DNS zone, however, that exact address is the root (`@`), where isroot cannot create a CNAME. PSL classification and DNS zone boundaries are different.
+
+| Host | Root: `myproject.isroot.in` | Child: `www.myproject.isroot.in` |
+| --- | --- | --- |
+| GitHub Pages | Four A records below | CNAME to the account's Pages hostname |
+| Vercel | A record if supported for your configuration; see verification limits below | CNAME to the project-specific target |
+| Render | A record to Render's published load balancer | CNAME to the service's hostname |
+| Railway | Requires external DNS with apex flattening or dynamic ALIAS | CNAME and the verification TXT shown by Railway |
+
+Using a child name such as `www` or `app` lets you use a normal CNAME with default isroot DNS. Adding a child record does not configure or redirect the root address. A root redirect requires an HTTP service with HTTPS configured for the root.
+
+## Add the address at your host
+
+In your hosting provider's custom-domain settings, add your exact address, such as `myproject.isroot.in`. Copy the DNS records it requests. Values can be specific to your project, so use the current instructions displayed by your host.
+
+## Add the DNS records
+
+Open **DNS Records** in isroot and select your subdomain. If you use custom nameservers, make the changes at that provider instead.
+
+| Your host supplies | What to enter in isroot |
+| --- | --- |
+| IPv4 address for your main address | A record, name `@`, supplied IP as value |
+| IPv6 address for your main address | AAAA record, name `@`, supplied IP as value |
+| Hostname for `www.myproject.isroot.in` | CNAME record, name `www`, supplied hostname as value |
+| Ownership verification token | TXT record at the relative name requested by the host |
+
+Do not enter `https://`, a port, or a URL path into an A, AAAA, or CNAME value. Check the [DNS record reference](/dns-records) if a CNAME conflicts with existing records or your host asks for a CNAME at `@`.
+
+## Example: Vercel
+
+1. Deploy your frontend and open the project's **Settings → Domains**.
+2. Add `www.myproject.isroot.in` (or `app.myproject.isroot.in`).
+3. In isroot, select the `myproject.isroot.in` zone and add a CNAME named `www` (or `app`), using the project-specific target Vercel displays.
+4. Add any verification TXT record you can create within your zone, then check the domain and certificate status in Vercel.
+
+For `myproject.isroot.in` itself, add that exact address in Vercel. If Vercel offers an A configuration, enter its IPv4 address at `@`. Vercel also documents `76.76.21.21` as its general A-record address; project-specific recommendations take priority. If the dashboard only requests a CNAME and does not accept the A configuration, use a child name or [external DNS with apex flattening](/nameservers#providers-to-consider). Do not create a CNAME at `@` or copy an IP obtained by resolving Vercel's CNAME target.
+
+Vercel can require a TXT record at `_vercel.isroot.in` when verifying access to a subdomain. That name is outside your zone: entering `_vercel` in your editor creates `_vercel.myproject.isroot.in` instead. If Vercel requests parent-level verification, [contact support](/support) with the exact requested name and value; verification needs review and is not guaranteed. Changing DNS providers or choosing `www` does not guarantee that this ownership check disappears.
+
+See [Vercel's custom-domain guide](https://vercel.com/docs/domains/working-with-domains/add-a-domain) and [its A/CNAME explanation](https://vercel.com/i/cname-vs-a-record). These are DNS setup options, not a guarantee that a provider will accept every isroot address.
+
+## Example: Render frontend
+
+Deploy the frontend as a **Static Site**, or a **Web Service** when it needs a running server. Open the service's **Settings → Custom Domains**, add your exact address, and save.
+
+| Address | Type | Name/Host in isroot | Value |
+| --- | --- | --- | --- |
+| `myproject.isroot.in` | A | `@` | `216.24.57.1` |
+| `www.myproject.isroot.in` | CNAME | `www` | Your service's exact `onrender.com` hostname |
+
+Render publishes the A address above for DNS providers without apex flattening. Remove old website A records and AAAA records at the address being moved; Render currently uses IPv4 for this setup. Preserve email and verification records. Return to Render, choose **Verify**, and wait for its certificate.
+
+If Render classifies your root address as a subdomain and rejects the A setup, use `www.myproject.isroot.in` with CNAME, or an external provider that accepts your zone and supports apex flattening. Configure any extra redirect domain Render lists only if it belongs to your registration.
+
+See [Render's custom-domain guide](https://render.com/docs/custom-domains) and [DNS configuration reference](https://render.com/docs/configure-other-dns).
+
+## Example: Railway frontend
+
+1. Deploy the frontend as an HTTP service and confirm it works on its Railway-provided domain.
+2. Open the service's **Settings → Networking → Public Networking**, choose **Custom Domain**, and add `www.myproject.isroot.in` (or `app.myproject.isroot.in`). Select the port your service listens on.
+3. In isroot, add a CNAME named `www` (or `app`) pointing to the exact Railway target shown.
+4. Add Railway's verification TXT at the exact requested relative name. Both records are required. If the requested TXT is outside your zone, contact support instead of changing its name.
+5. Wait for verification and certificate issuance, then test the frontend on HTTPS.
+
+For `myproject.isroot.in` itself, Railway requires CNAME flattening or dynamic ALIAS at the zone root. Default isroot DNS does not provide either feature. Use a child name, or first move to an [external DNS provider](/nameservers#providers-to-consider) that accepts the delegated zone and offers that feature. Do not use a fixed A record obtained by looking up Railway's target: its addresses can change.
+
+Railway's generic Cloudflare instructions assume you can add the zone to Cloudflare. That assumption does not apply to a standard free Cloudflare setup for an isroot registration. See [provider compatibility](/provider-compatibility) and [Railway's domain guide](https://docs.railway.com/networking/domains/working-with-domains).
+
+## Example: GitHub Pages at your root address
+
+To serve GitHub Pages at `myproject.isroot.in`, use A records at `@`. Although this address is a subdomain of `isroot.in`, it is the root of your delegated DNS zone. The isroot DNS editor does not allow a CNAME at `@`.
+
+1. Deploy your site with GitHub Pages.
+2. In the repository, open **Settings → Pages**. Set **Custom domain** to `myproject.isroot.in` and save before changing DNS.
+3. In isroot, open **DNS Records** and select `myproject.isroot.in`. With custom nameservers, use your DNS provider instead.
+4. Replace root A records for your previous host with the four records below. Add each IP separately, using **Name/Host** `@` and the same TTL, such as `3600`.
+
+| Type | Name/Host | Value |
+| --- | --- | --- |
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+
+For IPv6, also add these four AAAA records at `@`. Remove stale root AAAA records pointing to your previous host, even if you choose IPv4 only.
+
+| Type | Name/Host | Value |
+| --- | --- | --- |
+| AAAA | `@` | `2606:50c0:8000::153` |
+| AAAA | `@` | `2606:50c0:8001::153` |
+| AAAA | `@` | `2606:50c0:8002::153` |
+| AAAA | `@` | `2606:50c0:8003::153` |
+
+Keep the zone's NS, SOA, MX, and TXT records. Only replace website records you intend to move.
+
+Check the root records:
+
+```sh
+dig myproject.isroot.in A +short
+dig myproject.isroot.in AAAA +short
+```
+
+The A answer should contain the four IPv4 addresses above. If you enabled IPv6, the AAAA answer should contain the four IPv6 addresses.
+
+Return to **Settings → Pages**, wait for the DNS check and certificate, then enable **Enforce HTTPS**. DNS propagation and HTTPS availability can take up to 24 hours.
+
+For `www.myproject.isroot.in`, add a CNAME named `www` pointing to `USERNAME.github.io` or `ORGANIZATION.github.io`, without a repository path. Keep the root A records for `myproject.isroot.in`.
+
+GitHub may create a repository file named `CNAME` when publishing from a branch. That file stores the custom domain; it does not require a DNS CNAME at `@`.
+
+Record values and GitHub settings follow [GitHub's custom-domain guide](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+
+## Finish verification and HTTPS
+
+Return to your host and run its domain verification check. Once DNS is correct, allow the host to finish issuing the HTTPS certificate, then open your address in a browser.
+
+If you operate your own server, configure its web server for the hostname and arrange an HTTPS certificate there. DNS records alone do not configure virtual hosts, redirects, or TLS.
+
+## Confirm the result
+
+```sh
+dig myproject.isroot.in A +short
+dig myproject.isroot.in AAAA +short
+dig www.myproject.isroot.in CNAME +short
+```
+
+Check the record type you actually configured. If DNS resolves but the browser shows the wrong site or a certificate error, check the domain mapping and certificate status at your host. See [Troubleshooting](/troubleshooting).

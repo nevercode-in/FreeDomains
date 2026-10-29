@@ -1,0 +1,39 @@
+---
+title: Provider compatibility and PSL
+description: Understand delegated zones, Public Suffix List limitations, and hosting verification.
+---
+
+## Current PSL status
+
+As checked on October 29, 2026, `isroot.in` is not listed in the [Public Suffix List](https://publicsuffix.org/list/public_suffix_list.dat). The list helps software identify boundaries between independently registered sites. It does not create DNS records or enable DNS delegation.
+
+An isroot registration gives you control of a delegated zone such as `myproject.isroot.in`. It does not give you control of `isroot.in`, and it is not a separately registered domain at a registrar.
+
+## What this changes
+
+- A provider may treat your address as a subdomain of `isroot.in`, even though it is the root of your DNS zone.
+- Some DNS providers accept delegated subdomain zones; others require a registrable domain or a special plan.
+- A host may ask for verification at a parent-level name you cannot edit. Changing nameservers does not give you control of the parent.
+- Provider acceptance, certificate issuance, and shared-domain limits can still affect setup. DNS instructions alone cannot guarantee acceptance.
+
+The CNAME restriction at `@` comes from the NS and SOA records required at a DNS zone root. Adding `isroot.in` to the PSL would not remove that restriction. See [DNS record reference](/dns-records#cname-restrictions).
+
+## Choose a practical setup
+
+Use default isroot DNS when your host supplies A/AAAA records for your root, or use a CNAME at a child name such as `www` or `app`. See the [GitHub Pages, Vercel, Render, and Railway instructions](/connect-project).
+
+For an external provider, first confirm that it can create the exact zone `myproject.isroot.in`, without requiring ownership of `isroot.in`. If your host only supplies a hostname for the root, also confirm apex flattening or dynamic ALIAS support. These are separate requirements. See [Nameservers](/nameservers#providers-to-consider).
+
+## Parent-domain verification
+
+Only add verification records inside your registration. For example, `_verify.myproject.isroot.in` becomes `_verify` in the isroot editor, while `_verify.isroot.in` is outside your control. Do not remove the parent suffix and silently create a different name.
+
+If a host requests a record outside your zone, send the complete name, record type, value, and provider error to [support](/support). Support must review whether the request is appropriate; parent-domain access or approval is not promised.
+
+## Cookies for applications
+
+Because `isroot.in` is not a public suffix, PSL-based software can group sibling isroot registrations under the same site. Use host-only session cookies, preferably with the `__Host-` prefix where applicable; do not set a cookie's Domain to `isroot.in`. Applications should validate request origins and implement CSRF protection instead of relying only on SameSite cookies to separate sibling registrations. See the [PSL's explanation](https://publicsuffix.org/) and [MDN's cookie guidance](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies).
+
+## Status of these guides
+
+Provider instructions are based on the linked official documentation. They are not live account-by-account compatibility tests. Use your provider's current dashboard values and report acceptance or verification problems to support.

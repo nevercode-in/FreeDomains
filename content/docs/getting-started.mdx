@@ -1,0 +1,42 @@
+---
+title: Getting started
+description: Create an account and register your first isroot subdomain.
+---
+
+## Create your account
+
+1. Open [isroot.in](https://isroot.in) and choose **Get Started**.
+2. Enter your name if prompted and complete the CAPTCHA.
+3. Choose **Signup with GitHub** and complete the GitHub authorization flow.
+4. If you already have an account, choose **Sign in** instead.
+
+GitHub is the sign-in method supported by the current application.
+
+![The isroot registration entry point](/images/click%20here%20to%20register.png)
+
+## Register a subdomain
+
+1. Open **Subdomains** in the dashboard.
+2. Open the creation form, enter a name such as `myproject`, and complete the CAPTCHA.
+3. Choose **Create Subdomain** and wait for the success message.
+4. Confirm that `myproject.isroot.in` appears in your subdomain list.
+
+Enter only the name, without `.isroot.in`, a URL scheme, or a path. Names must be 3–63 characters long and use lowercase letters, numbers, or hyphens. A hyphen cannot appear at either end. Reserved, inappropriate, and already registered names are rejected.
+
+![Subdomain registration in the dashboard](/images/click%20here%20to%20register%20domain.png)
+
+The dashboard design may differ from these screenshots.
+
+## What happens next
+
+Your registration lasts 365 days. Check its expiry date in **Subdomains**, and [renew before it expires](/manage-domains#renew-a-subdomain).
+
+DNS setup is attempted during registration. If the dashboard offers **Retry setup / migration**, use it in **DNS Records** for the selected subdomain.
+
+<Callout type="info">
+The default allowance is one subdomain. Starring the repository linked in the dashboard unlocks up to five. Successful registrations are limited to one per hour. See [limits and naming rules](/limits).
+</Callout>
+
+## Connect your project
+
+Registration does not deploy a website. Follow [Connect a project](/connect-project) to add your hosting provider's DNS records, then use [Manage DNS](/dns-manage) for future changes.

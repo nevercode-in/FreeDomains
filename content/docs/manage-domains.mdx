@@ -1,0 +1,40 @@
+---
+title: Manage subdomains
+description: Check status, renew a registration, and delete an unused subdomain.
+---
+
+## Open a subdomain
+
+Open **Subdomains** in the dashboard and choose **Manage** for the address you own. The details page shows its status, time until expiry, and nameservers.
+
+An active registration does not by itself confirm that a website is connected. Check your [hosting and DNS configuration](/connect-project) separately.
+
+## Renew a subdomain
+
+1. Open **Subdomains** and choose **Renew**, or open **Manage** and choose **Renew Domain**.
+2. Wait for the success message.
+3. Reload the details page and confirm the updated expiry date.
+
+Renewal becomes available during the final 60 days before expiry. A successful renewal adds 365 days to the previous expiry date.
+
+The current renewal flow also accepts expired registrations during their seven-day grace period, provided their status remains eligible. Renew before expiry rather than relying on that period. Suspended registrations and registrations past their grace deadline cannot use this flow; [contact support](/support).
+
+If the dashboard says to wait before renewing, try again when the renewal window opens. If it reports that the registration changed, refresh the page before retrying.
+
+## Change DNS providers
+
+Use **Edit Nameservers** on the details page. Follow the [Nameservers guide](/nameservers) to prepare the new DNS zone before changing delegation.
+
+## Delete a subdomain
+
+1. Open **Manage** for the correct subdomain.
+2. Find **Delete Domain** and choose **Delete**.
+3. Check the displayed address, type `DELETE`, and confirm.
+
+<Callout type="warn">
+The dashboard describes deletion as permanent. Move any services that depend on the address before deleting it. Do not assume that you can register the same name again.
+</Callout>
+
+## Review account activity
+
+Open **audit Logs** in the dashboard to review recorded account actions. Include the relevant time and action when [reporting a problem](/support).
