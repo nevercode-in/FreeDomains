@@ -21,6 +21,16 @@ yarn-debug.log*
 yarn-error.log*
 
 # others
-.env*.local
+.env
+.env.*
+!.env.example
 .vercel
+.firebase/
+.firebaserc
+firebase-debug.log*
 next-env.d.ts
+
+# local credentials and agent state
+/.aws/
+/.codex/
+/.agents/
